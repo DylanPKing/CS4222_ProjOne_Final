@@ -11,7 +11,7 @@ import javax.swing.*;
 public class LeagueManager
 {
 	public static int loggedInUser;
-	public static ArrayList<ArrayList<String>>  teams;
+	public static ArrayList<ArrayList<String>> participants;
 	public static ArrayList<ArrayList<Integer>> fixtures;	
 	public static ArrayList<ArrayList<Integer>> results;
 	public static int [][] leaderBoard;
@@ -489,7 +489,7 @@ public class LeagueManager
 	 * Takes in an Integer ArralyList and a file, and reads the file into the ArrayList.
 	 * Does not return since ArrayLists are pass-by-reference.
 	 */
-	public static void writeToArrayList(ArrayList<ArrayList<Integer>> aList, File fileToRead) throws IOException
+	public static void writeToIntArrayList(ArrayList<ArrayList<Integer>> aList, File fileToRead) throws IOException
 	{
 		FileReader fileBeingRead = new FileReader(fileToRead);
 		Scanner in = new Scanner(fileBeingRead);
@@ -820,7 +820,7 @@ public class LeagueManager
 	public static void generateLeaderboard(int leagueNum)
 	{
 		boolean textIntoArray; 
-		textIntoArray = inputTextFiles();
+		textIntoArray = inputTextFiles(leagueNum);
 		if (!textIntoArray)
 			System.out.println("Files have not been found.");
 		else
@@ -837,159 +837,136 @@ public class LeagueManager
 	* inputTextFiles -
 	* The text files are passed into arrays for teams, fixtures and outcomes, ready to be used for calculations for the leaderboard.
 	*/
-  public static boolean  inputTextFiles() throws IOException
-  {
-    String teamsFile = "whatever.txt";
-    String fixturesFile = "whatever.txt"; //text file names
-    String outcomesFile = "whatever.txt";
-    
-    String fileContents[];
-	File teamsInput = new File(teamsFile);
-	File fixturesInput = new File(fixturesFile);
-	File outcomesInput = new File(outcomesFile);
-	
-	teams = new ArrayList<ArrayList<String>>();
-	teams.add(new ArrayList<String>());
-    teams.add(new ArrayList<String>());
-  
-    fixtures = new ArrayList<ArrayList<Integer>>();
-	fixtures.add(new ArrayList<Integer>());
-    fixtures.add(new ArrayList<Integer>());
-    fixtures.add(new ArrayList<Integer>());
-    
-    results = new ArrayList<ArrayList<Integer>>();
-	results.add(new ArrayList<Integer>());
-    results.add(new ArrayList<Integer>());
-    results.add(new ArrayList<Integer>());
-    
-	if (teamsInput.exists() && fixturesInput.exists() && outcomesInput.exists())
+	public static boolean inputTextFiles(int leagueNum) throws IOException
 	{
-	  Scanner in;
-	  in = new Scanner(teamsInput);
-	  while(in.hasNext())
-	  {
-	    fileContents = (in.nextLine()).split(",");
-	    teams.get(0).add(fileContents[0]);  
-	    teams.get(1).add(fileContents[1]);  
-	  } 
-	  in.close();
-	  in = new Scanner(fixturesInput);
-	  while(in.hasNext())
-	  {
-	    fileContents = (in.nextLine()).split(",");
-	    fixtures.get(0).add(Integer.parseInt(fileContents[0]));  
-	    fixtures.get(1).add(Integer.parseInt(fileContents[1]));  
-	    fixtures.get(2).add(Integer.parseInt(fileContents[2]));  
-	  } 
-	  in.close();
-	  in = new Scanner(outcomesInput);
-	  while(in.hasNext())
-	  {
-	    fileContents = (in.nextLine()).split(",");
-	    results.get(0).add(Integer.parseInt(fileContents[0]));  
-	    results.get(1).add(Integer.parseInt(fileContents[1]));  
-	    results.get(2).add(Integer.parseInt(fileContents[2]));  
-	  } 
-	  in.close();
-	  return true;
-    }
-    else
-      return false;
-  }
+		String participantsFile = leagueNum + "_participants.txt";
+		String fixturesFile = leagueNum + "_fixtures.txt"; //text file names
+		String outcomesFile = leagueNum + "_results.txt";
+		
+		File participantsInput = new File(participantsFile);
+		File fixturesInput = new File(fixturesFile);
+		File outcomesInput = new File(outcomesFile);
+
+		participants = new ArrayList<ArrayList<String>>();
+		participants.add(new ArrayList<String>());
+		participants.add(new ArrayList<String>());
+
+		fixtures = new ArrayList<ArrayList<Integer>>();
+		fixtures.add(new ArrayList<Integer>());
+		fixtures.add(new ArrayList<Integer>());
+		fixtures.add(new ArrayList<Integer>());
+
+		results = new ArrayList<ArrayList<Integer>>();
+		results.add(new ArrayList<Integer>());
+		results.add(new ArrayList<Integer>());
+		results.add(new ArrayList<Integer>());
+
+		if (participantsInput.exists() && fixturesInput.exists() && outcomesInput.exists())
+		{
+			writeToArrayList(participants, participantsInput);
+			writeToIntArrayList(fixtures, fixturesInput);
+			writeToIntArrayList(results, outcomesInput);
+			return true;
+		}
+		else
+			return false;
+		}
 	/**
 	* Lennart Mantel -
 	* emptyLeaderboardFrame -
 	* creates an empty leaderboard the appropriate size for the amount of teams there are
 	*/
-  public static void emptyLeaderboardFrame()
-  { 
-    int rows = teams.get(0).size();
-	int columns = 14;  
-	leaderBoard = new int[rows][columns];
-	for (int i = 0; i < leaderBoard.length; i++)
-      leaderBoard[i][0] = Integer.parseInt(teams.get(0).get(i)); //please explain this loop
-  }	 
+	public static void emptyLeaderboardFrame()
+	{ 
+		int rows = teams.get(0).size();
+		int columns = 14;  
+		leaderBoard = new int[rows][columns];
+		for (int i = 0; i < leaderBoard.length; i++)
+		{
+			leaderBoard[i][0] = Integer.parseInt(teams.get(0).get(i)); //please explain this loop
+		}
+	}	 
 	/*
 	* Lennart Mantel -
 	* calculateScores -
 	* A win, draw or loss is added for each team who played and points are awarded as such and added to the leaderboard
 	*/
-  public static void calculateScores()
-  {
-	int fixtureNumber, homeTeamScore, awayTeamScore, homeTeamNumber, awayTeamNumber;
-	int position;
-	for (int i = 0; i < results.get(0).size(); i++)  
-    {
-	  fixtureNumber  = results.get(0).get(i); //explain this? double get 
-	  homeTeamScore  = results.get(1).get(i);
-	  awayTeamScore  = results.get(2).get(i);
-	  position       = fixtures.get(0).indexOf(fixtureNumber);
-	  homeTeamNumber = fixtures.get(1).get(position);
-	  awayTeamNumber = fixtures.get(2).get(position);
-	  if (homeTeamScore == awayTeamScore)
-	  {
-		recordFixtureResultForHomeTeam(homeTeamNumber,0,1,0,homeTeamScore,awayTeamScore,1);
-		recordFixtureResultForAwayTeam(awayTeamNumber,0,1,0,homeTeamScore,awayTeamScore,1);
-	  }  
-	  else if (homeTeamScore > awayTeamScore)
-	  {
-		recordFixtureResultForHomeTeam(homeTeamNumber,1,0,0,homeTeamScore,awayTeamScore,3);
-		recordFixtureResultForAwayTeam(awayTeamNumber,0,0,1,homeTeamScore,awayTeamScore,0);  
-	  }  
-	  else
-	  {
-		recordFixtureResultForHomeTeam(homeTeamNumber,0,0,1,homeTeamScore,awayTeamScore,0);
-		recordFixtureResultForAwayTeam(awayTeamNumber,1,0,0,homeTeamScore,awayTeamScore,3);  
-	  }    
-    }
-  }	 
-  
-  public static void recordFixtureResultForHomeTeam(int hTN, int w, int d, int l, 
-                                                       int hTS, int aTS, int p)
-  {
-	leaderBoard[hTN-1][1]++;        			// gamesPlayed
-	leaderBoard[hTN-1][2]+= w;      			// homeWin
-	leaderBoard[hTN-1][3]+= d;      			// homeDraw
-	leaderBoard[hTN-1][4]+= l;      			// homeLoss
-	leaderBoard[hTN-1][5]+= hTS;    			// homeTeamScore
-	leaderBoard[hTN-1][6]+= aTS;    			// awayTeamScore
-	leaderBoard[hTN-1][12] += (hTS - aTS);    	// goalDifference
-	leaderBoard[hTN-1][13] += p;    			// points
-  }
- 
-  public static void recordFixtureResultForAwayTeam(int aTN, int w, int d, int l, 
-                                                       int hTS, int aTS, int p)
-  {
-	leaderBoard[aTN-1][1]++;        			// gamesPlayed
-	leaderBoard[aTN-1][7]+= w;      			// awayWin
-	leaderBoard[aTN-1][8]+= d;      			// awayDraw
-	leaderBoard[aTN-1][9]+= l;      			// awayLoss
-	leaderBoard[aTN-1][10]+= aTS;    			// awayTeamScore
-	leaderBoard[aTN-1][11]+= hTS;    			// homeTeamScore
-	leaderBoard[aTN-1][12] += (aTS - hTS);    	// goalDifference
-	leaderBoard[aTN-1][13] += p;    			// points  
-  }	
-  
-  public static void orderLeaderBoard()
-  {
-	int [][] temp = new int[leaderBoard.length][leaderBoard[0].length];
-    boolean finished = false;
-    while (!finished) 
-    {
-      finished = true;
-      for (int i = 0; i < leaderBoard.length - 1; i++) 
-      {
-        if (leaderBoard[i][13] < leaderBoard[i + 1][13])
-        {
-          for (int j = 0; j < leaderBoard[i].length; j++) 
-          {
-            temp[i][j]            = leaderBoard[i][j];
-            leaderBoard[i][j]     = leaderBoard[i + 1][j]; //what does this actually sort the order of?
-            leaderBoard[i + 1][j] = temp[i][j];
-          }
-          finished = false;
-        }
-      }
-    }
-  }	 
+	public static void calculateScores()
+	{
+		int fixtureNumber, homeTeamScore, awayTeamScore, homeTeamNumber, awayTeamNumber;
+		int position;
+		for (int i = 0; i < results.get(0).size(); i++)  
+		{
+			fixtureNumber  = results.get(0).get(i); //explain this? double get 
+			homeTeamScore  = results.get(1).get(i);
+			awayTeamScore  = results.get(2).get(i);
+			position       = fixtures.get(0).indexOf(fixtureNumber);
+			homeTeamNumber = fixtures.get(1).get(position);
+			awayTeamNumber = fixtures.get(2).get(position);
+			if (homeTeamScore == awayTeamScore)
+			{
+			recordFixtureResultForHomeTeam(homeTeamNumber,0,1,0,homeTeamScore,awayTeamScore,1);
+			recordFixtureResultForAwayTeam(awayTeamNumber,0,1,0,homeTeamScore,awayTeamScore,1);
+			}  
+			else if (homeTeamScore > awayTeamScore)
+			{
+			recordFixtureResultForHomeTeam(homeTeamNumber,1,0,0,homeTeamScore,awayTeamScore,3);
+			recordFixtureResultForAwayTeam(awayTeamNumber,0,0,1,homeTeamScore,awayTeamScore,0);  
+			}  
+			else
+			{
+			recordFixtureResultForHomeTeam(homeTeamNumber,0,0,1,homeTeamScore,awayTeamScore,0);
+			recordFixtureResultForAwayTeam(awayTeamNumber,1,0,0,homeTeamScore,awayTeamScore,3);  
+			}    
+		}
+	}	 
+
+	public static void recordFixtureResultForHomeTeam(int hTN, int w, int d, int l, 
+														int hTS, int aTS, int p)
+	{
+		leaderBoard[hTN-1][1]++;        			// gamesPlayed
+		leaderBoard[hTN-1][2]+= w;      			// homeWin
+		leaderBoard[hTN-1][3]+= d;      			// homeDraw
+		leaderBoard[hTN-1][4]+= l;      			// homeLoss
+		leaderBoard[hTN-1][5]+= hTS;    			// homeTeamScore
+		leaderBoard[hTN-1][6]+= aTS;    			// awayTeamScore
+		leaderBoard[hTN-1][12] += (hTS - aTS);    	// goalDifference
+		leaderBoard[hTN-1][13] += p;    			// points
+	}
+
+	public static void recordFixtureResultForAwayTeam(int aTN, int w, int d, int l, 
+														int hTS, int aTS, int p)
+	{
+		leaderBoard[aTN-1][1]++;        			// gamesPlayed
+		leaderBoard[aTN-1][7]+= w;      			// awayWin
+		leaderBoard[aTN-1][8]+= d;      			// awayDraw
+		leaderBoard[aTN-1][9]+= l;      			// awayLoss
+		leaderBoard[aTN-1][10]+= aTS;    			// awayTeamScore
+		leaderBoard[aTN-1][11]+= hTS;    			// homeTeamScore
+		leaderBoard[aTN-1][12] += (aTS - hTS);    	// goalDifference
+		leaderBoard[aTN-1][13] += p;    			// points  
+	}	
+
+	public static void orderLeaderBoard()
+	{
+		int [][] temp = new int[leaderBoard.length][leaderBoard[0].length];
+		boolean finished = false;
+		while (!finished) 
+		{
+			finished = true;
+			for (int i = 0; i < leaderBoard.length - 1; i++) 
+			{
+				if (leaderBoard[i][13] < leaderBoard[i + 1][13])
+				{
+					for (int j = 0; j < leaderBoard[i].length; j++) 
+					{
+					temp[i][j]            = leaderBoard[i][j];
+					leaderBoard[i][j]     = leaderBoard[i + 1][j]; //what does this actually sort the order of?
+					leaderBoard[i + 1][j] = temp[i][j];
+					}
+					finished = false;
+				}
+			}
+		}
+	}
 }
