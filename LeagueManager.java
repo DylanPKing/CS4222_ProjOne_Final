@@ -826,7 +826,7 @@ public class LeagueManager
 		else
 		{
 			emptyLeaderboardFrame();
-			calculateScores();
+			calculateScores(leagueNum);
 			orderLeaderBoard();
 			displayLeaderboard();
 		}
@@ -842,7 +842,7 @@ public class LeagueManager
 		String participantsFile = leagueNum + "_participants.txt";
 		String fixturesFile = leagueNum + "_fixtures.txt"; //text file names
 		String outcomesFile = leagueNum + "_results.txt";
-		
+
 		File participantsInput = new File(participantsFile);
 		File fixturesInput = new File(fixturesFile);
 		File outcomesInput = new File(outcomesFile);
@@ -869,8 +869,10 @@ public class LeagueManager
 			return true;
 		}
 		else
+		{
 			return false;
 		}
+	}
 	/**
 	* Lennart Mantel -
 	* emptyLeaderboardFrame -
@@ -891,8 +893,10 @@ public class LeagueManager
 	* calculateScores -
 	* A win, draw or loss is added for each team who played and points are awarded as such and added to the leaderboard
 	*/
-	public static void calculateScores()
+	public static void calculateScores(int leagueNum)
 	{
+		File scoresFile = new File(leagueNum + "_pointscheme.txt");
+		Scanner pointScan = new Scanner(scoresFile);
 		int fixtureNumber, homeTeamScore, awayTeamScore, homeTeamNumber, awayTeamNumber;
 		int position;
 		for (int i = 0; i < results.get(0).size(); i++)  
