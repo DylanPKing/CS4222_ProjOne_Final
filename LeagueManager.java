@@ -964,9 +964,9 @@ public class LeagueManager
 				{
 					for (int j = 0; j < leaderBoard[i].length; j++) 
 					{
-					temp[i][j]            = leaderBoard[i][j];
-					leaderBoard[i][j]     = leaderBoard[i + 1][j]; //what does this actually sort the order of?
-					leaderBoard[i + 1][j] = temp[i][j];
+						temp[i][j]            = leaderBoard[i][j];
+						leaderBoard[i][j]     = leaderBoard[i + 1][j]; //what does this actually sort the order of?
+						leaderBoard[i + 1][j] = temp[i][j];
 					}
 					finished = false;
 				}
