@@ -459,8 +459,8 @@ public class LeagueManager
 	/**
 	 * Dylan King & Louise Madden - 
 	 * writeToArrayList - 
-	 * Takes in an ArralyList and a file, and reads the file into the ArrayList.
-	 * Does not return since ArralyLists are pass-by-reference.
+	 * Takes in an String ArralyList and a file, and reads the file into the ArrayList.
+	 * Does not return since ArrayLists are pass-by-reference.
 	 */
 	public static void writeToArrayList(ArrayList<ArrayList<String>> aList, File fileToRead) throws IOException
 	{
@@ -473,6 +473,29 @@ public class LeagueManager
 			for (int i = 0; i < aList.size(); i++)
 			{
 				aList.get(i).add(lineElements[i]);
+			}
+		}
+		in.close();
+		fileBeingRead.close();
+	}
+
+	/**
+	 * Dylan King - 
+	 * writeToArrayList - 
+	 * Takes in an Integer ArralyList and a file, and reads the file into the ArrayList.
+	 * Does not return since ArrayLists are pass-by-reference.
+	 */
+	public static void writeToArrayList(ArrayList<ArrayList<Integer>> aList, File fileToRead) throws IOException
+	{
+		FileReader fileBeingRead = new FileReader(fileToRead);
+		Scanner in = new Scanner(fileBeingRead);
+		String[] lineElements;
+		while (in.hasNext())
+		{
+			lineElements = (in.nextLine()).split(",");
+			for (int i = 0; i < aList.size(); i++)
+			{
+				aList.get(i).add(Integer.parseInt(lineElements[i]));
 			}
 		}
 		in.close();
@@ -765,7 +788,8 @@ public class LeagueManager
 		
 		String input;
 		String[] writeToFile = new String[3];
-		String[] diagBox = {"Enter the points awarded to the winning team.", "Enter the points awarded to the losing team.",
+		String[] diagBox = {"Enter the points awarded to the winning team.",
+							"Enter the points awarded to the losing team.",
 							"Enter the points awarded in the event of a draw."};
 		for (int i = 0; i < 3;)
 		{
