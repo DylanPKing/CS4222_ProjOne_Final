@@ -832,11 +832,12 @@ public class LeagueManager
 		}
 	}
 	
-		/**
-	* Lennart Mantel -
-	* inputTextFiles -
-	* The text files are passed into arrays for teams, fixtures and outcomes, ready to be used for calculations for the leaderboard.
-	*/
+	/**
+	 * Lennart Mantel -
+	 * inputTextFiles -
+	 * The text files are passed into arrays for teams, fixtures and outcomes,
+	 * ready to be used for calculations for the leaderboard.
+	 */
 	public static boolean inputTextFiles(int leagueNum) throws IOException
 	{
 		String participantsFile = leagueNum + "_participants.txt";
@@ -888,6 +889,7 @@ public class LeagueManager
 			leaderBoard[i][0] = Integer.parseInt(teams.get(0).get(i)); //please explain this loop
 		}
 	}	 
+
 	/*
 	* Lennart Mantel -
 	* calculateScores -
@@ -901,10 +903,10 @@ public class LeagueManager
 		int position;
 		for (int i = 0; i < results.get(0).size(); i++)  
 		{
-			fixtureNumber  = results.get(0).get(i); //explain this? double get 
-			homeTeamScore  = results.get(1).get(i);
-			awayTeamScore  = results.get(2).get(i);
-			position       = fixtures.get(0).indexOf(fixtureNumber);
+			fixtureNumber = results.get(0).get(i); //explain this? double get 
+			homeTeamScore = results.get(1).get(i);
+			awayTeamScore = results.get(2).get(i);
+			position = fixtures.get(0).indexOf(fixtureNumber);
 			homeTeamNumber = fixtures.get(1).get(position);
 			awayTeamNumber = fixtures.get(2).get(position);
 			if (homeTeamScore == awayTeamScore)
@@ -929,11 +931,11 @@ public class LeagueManager
 														int hTS, int aTS, int p)
 	{
 		leaderBoard[hTN-1][1]++;        			// gamesPlayed
-		leaderBoard[hTN-1][2]+= w;      			// homeWin
-		leaderBoard[hTN-1][3]+= d;      			// homeDraw
-		leaderBoard[hTN-1][4]+= l;      			// homeLoss
-		leaderBoard[hTN-1][5]+= hTS;    			// homeTeamScore
-		leaderBoard[hTN-1][6]+= aTS;    			// awayTeamScore
+		leaderBoard[hTN-1][2] += w;      			// homeWin
+		leaderBoard[hTN-1][3] += d;      			// homeDraw
+		leaderBoard[hTN-1][4] += l;      			// homeLoss
+		leaderBoard[hTN-1][5] += hTS;    			// homeTeamScore
+		leaderBoard[hTN-1][6] += aTS;    			// awayTeamScore
 		leaderBoard[hTN-1][12] += (hTS - aTS);    	// goalDifference
 		leaderBoard[hTN-1][13] += p;    			// points
 	}
@@ -942,11 +944,11 @@ public class LeagueManager
 														int hTS, int aTS, int p)
 	{
 		leaderBoard[aTN-1][1]++;        			// gamesPlayed
-		leaderBoard[aTN-1][7]+= w;      			// awayWin
-		leaderBoard[aTN-1][8]+= d;      			// awayDraw
-		leaderBoard[aTN-1][9]+= l;      			// awayLoss
-		leaderBoard[aTN-1][10]+= aTS;    			// awayTeamScore
-		leaderBoard[aTN-1][11]+= hTS;    			// homeTeamScore
+		leaderBoard[aTN-1][7] += w;      			// awayWin
+		leaderBoard[aTN-1][8] += d;      			// awayDraw
+		leaderBoard[aTN-1][9] += l;      			// awayLoss
+		leaderBoard[aTN-1][10] += aTS;    			// awayTeamScore
+		leaderBoard[aTN-1][11] += hTS;    			// homeTeamScore
 		leaderBoard[aTN-1][12] += (aTS - hTS);    	// goalDifference
 		leaderBoard[aTN-1][13] += p;    			// points  
 	}	
@@ -964,8 +966,8 @@ public class LeagueManager
 				{
 					for (int j = 0; j < leaderBoard[i].length; j++) 
 					{
-						temp[i][j]            = leaderBoard[i][j];
-						leaderBoard[i][j]     = leaderBoard[i + 1][j]; //what does this actually sort the order of?
+						temp[i][j] = leaderBoard[i][j];
+						leaderBoard[i][j] = leaderBoard[i + 1][j]; //what does this actually sort the order of?
 						leaderBoard[i + 1][j] = temp[i][j];
 					}
 					finished = false;
