@@ -819,9 +819,6 @@ public class LeagueManager
 		{
 			JOptionPane.showMessageDialog(null, "File already exists");
 		}
-		//maybe should have the scores for games?
-		//JOptionPane.showMessageDialog(null, "the scores for the game are
-		//+
 		else
 		{
 			boolean valid = false;
@@ -1059,7 +1056,7 @@ public class LeagueManager
 	 * displayLeaderBoard - 
 	 * Takes all previous leaderboard information and displays it in a JOPtionPane Message Dialog.
 	 */
-	public static void displayLeaderboard()// needs to be converted
+	public static void displayLeaderboard()
 	{
 		String output;
 		int aTeamNumber;
