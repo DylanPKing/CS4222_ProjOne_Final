@@ -962,18 +962,18 @@ public class LeagueManager
 			awayTeamNumber = intFixtures.get(2).get(position);
 			if (homeTeamScore == awayTeamScore)
 			{
-			recordResultForHomeTeam(homeTeamNumber,0,1,0,homeTeamScore,awayTeamScore,drawPoints);
-			recordResultForAwayTeam(awayTeamNumber,0,1,0,homeTeamScore,awayTeamScore,drawPoints);
+				recordResultForHomeTeam(homeTeamNumber,0,1,0,homeTeamScore,awayTeamScore,drawPoints);
+				recordResultForAwayTeam(awayTeamNumber,0,1,0,homeTeamScore,awayTeamScore,drawPoints);
 			}  
 			else if (homeTeamScore > awayTeamScore)
 			{
-			recordResultForHomeTeam(homeTeamNumber,1,0,0,homeTeamScore,awayTeamScore,winPoints);
-			recordResultForAwayTeam(awayTeamNumber,0,0,1,homeTeamScore,awayTeamScore,losePoints);
+				recordResultForHomeTeam(homeTeamNumber,1,0,0,homeTeamScore,awayTeamScore,winPoints);
+				recordResultForAwayTeam(awayTeamNumber,0,0,1,homeTeamScore,awayTeamScore,losePoints);
 			}  
 			else
 			{
-			recordResultForHomeTeam(homeTeamNumber,0,0,1,homeTeamScore,awayTeamScore,losePoints);
-			recordResultForAwayTeam(awayTeamNumber,1,0,0,homeTeamScore,awayTeamScore,winPoints);
+				recordResultForHomeTeam(homeTeamNumber,0,0,1,homeTeamScore,awayTeamScore,losePoints);
+				recordResultForAwayTeam(awayTeamNumber,1,0,0,homeTeamScore,awayTeamScore,winPoints);
 			}    
 		}
 	}	 
